@@ -1,25 +1,28 @@
 import dotenv from 'dotenv';
-import { Events, GatewayIntentBits, SlashCommandBuilder } from 'discord.js';
-import { ExtendedClient } from './ExtendedClient';
+import { GatewayIntentBits } from 'discord.js';
+import { ExtendedClient } from './types/ExtendedClient';
+import { allHandlers } from './handlers/allHandlers';
 
-function main() {
+function startAllHandlers(client: ExtendedClient): void {
+	for (let i = 0; i < allHandlers.length; i++) {
+		allHandlers[i](client);
+	}
+}
+
+function main(): void {
 	// To get the token from the environment variables
 	dotenv.config();
 
 	// Create a new client instance
 	const client = new ExtendedClient({ intents: [GatewayIntentBits.Guilds] });
 
-	// When the client is ready, run this code (only once)
-	// We use 'c' for the event parameter to keep it separate from the already defined 'client'
-	client.once(Events.ClientReady, c => {
-		console.log(`Ready! Logged in as ${c.user.tag}`);
-	});
+	// Starting all handlers (commands, events...)
+	startAllHandlers(client);
 
 	// Log in to Discord with your client's token
 	client.login(process.env.BOT_TOKEN);
 
 }
-
 
 // Main call
 main();

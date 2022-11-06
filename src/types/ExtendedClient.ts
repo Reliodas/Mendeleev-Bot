@@ -1,5 +1,5 @@
-import { Client, ClientOptions, Collection, SlashCommandSubcommandBuilder } from 'discord.js';
-import { SlashCommand } from './types';
+import { Client, ClientOptions, Collection } from 'discord.js';
+import { SlashCommand } from './SlashCommand';
 
 export class ExtendedClient extends Client {
 	commands: Collection<string, SlashCommand>;
